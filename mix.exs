@@ -9,6 +9,7 @@ defmodule Evo.Mixfile do
      start_permanent: Mix.env == :prod,
      deps: deps(),
      package: package(),
+     docs: [main: Evo, extras: ["README.md"]],
      description: "An OTP cart meant for use in eCommerce applications"
    ]
   end
