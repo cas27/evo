@@ -26,7 +26,7 @@ defmodule Evo.Mixfile do
 
   defp package do
     [
-      name: Evo,
+      name: :evo,
       maintainers: ["Cory Schmitt"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/cas27/evo",
