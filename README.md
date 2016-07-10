@@ -1,16 +1,21 @@
 # Evo
 
-**TODO: Add description**
+OTP cart meant for use in eCommerce applications
+
+**Current Roadmap**
+- Add shipping map to cart struct
+- Add subtotal
+- Consider changing update quantities API from delta to new quantity
+- Move to using a global registry lib (gproc, syn, etc)
+- Need stale cart clean-up strategy
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
   1. Add `evo` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:evo, "~> 0.1.0"}]
+      [{:evo, "~> 0.2.0"}]
     end
     ```
 
@@ -22,3 +27,37 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
 
+## Usage
+
+```elixir
+cart_id = 123
+Evo.create_or_get_cart(cart_id)
+
+item = %Evo.Cart.CartItem{
+  id: "SKU123",
+  name: "Foosball",
+  price: 4.99,
+  qty: 2,
+  meta: %{personalized: "Johnny"}
+}
+
+Evo.add_item(cart_id, item)
+#=>  {:ok, %Evo.Cart{
+#        discount: 0.0,
+#        total: 9.98,
+#        items: [%Evo.Cart.CartItem{
+#          id: "SKU123",
+#          name: "Foosball",
+#          price: 4.99,
+#          qty: 2,
+#          meta: %{personalized: "Johnny"}
+#      }
+#    }]
+#}}
+```
+
+Check out [the docs](http://hexdocs.pm/evo/) for the full feature list.
+
+## license
+
+Evo source code is released under the Apache 2 License.

@@ -3,31 +3,33 @@ defmodule Evo.Mixfile do
 
   def project do
     [app: :evo,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     deps: deps(),
+     package: package(),
+     description: "An OTP cart meant for use in eCommerce applications"
+   ]
   end
 
   # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger],
      mod: {Evo, []}]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:ex_doc, "~> 0.12", only: :dev}]
+  end
+
+  defp package do
+    [
+      name: Evo,
+      maintainers: ["Cory Schmitt"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/cas27/evo",
+               "Docs" => "http://hexdocs.pm/evo"}
+    ]
   end
 end
