@@ -173,6 +173,28 @@ defmodule Evo do
     Cart.update_quantities(cart_pid, items)
   end
 
+  @doc """
+  Updates the shipping details of the cart
+
+  ## Example
+
+      iex> cart_id = 109
+      iex> Evo.create_or_get_cart(cart_id)
+      iex> Evo.add_item(109, %Evo.Cart.CartItem{id: "SKU12", qty: 1, price: 84})
+      iex> Evo.update_shipping(cart_id,
+      ...> %{carrier: "UPS", class: "Ground", cost: 34.55})
+      {:ok,
+        %Evo.Cart{discount: 0.0,
+        items: [%Evo.Cart.CartItem{id: "SKU12", meta: %{}, name: "", price: 84,
+        qty: 1}], shipping: %{carrier: "UPS", class: "Ground", cost: 34.55},
+        total: 118.55}}
+
+  """
+  def update_shipping(cart_id, shipping) do
+    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    Cart.update_shipping(cart_pid, shipping)
+  end
+
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false

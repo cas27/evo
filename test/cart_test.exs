@@ -110,4 +110,20 @@ defmodule Evo.CartTest do
         {:error, "Invalid discount"}
     end
   end
+
+  describe "Shipping" do
+    test "shipping details", %{cart: cart_pid, valid_item: vi} do
+      Cart.add_item(cart_pid, vi)
+      Cart.update_shipping(cart_pid,
+        %{carrier: "USPS", class: "Priority", cost: 25.52})
+
+      assert Cart.get_cart(cart_pid) == {:ok, %Cart{
+        total: 1625.92,
+        discount: 0.0,
+        shipping: %{carrier: "USPS", class: "Priority", cost: 25.52},
+        items: [vi]
+      }}
+
+    end
+  end
 end

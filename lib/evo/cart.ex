@@ -7,6 +7,7 @@ defmodule Evo.Cart do
   defstruct [
     total: 0.0,
     discount: 0.0,
+    shipping: %{carrier: nil, class: nil, cost: 0.0},
     items: []
   ]
 
@@ -30,6 +31,10 @@ defmodule Evo.Cart do
 
   def remove_item(cart_pid, item_id, meta) do
     GenServer.call(cart_pid, {:remove_item, item_id, meta})
+  end
+
+  def update_shipping(cart_pid, shipping) do
+    GenServer.call(cart_pid, {:update_shipping, shipping})
   end
 
   def update_quantities(cart_pid, items) do
@@ -61,6 +66,13 @@ defmodule Evo.Cart do
     |> reply_with_cart
   end
 
+  def handle_call({:update_shipping, shipping}, _from, cart) do
+    cart
+    |> Map.update!(:shipping, fn(_) -> shipping end)
+    |> update_cart_total
+    |> reply_with_cart
+  end
+
   def handle_call({:update_quantities, items}, _from, cart) do
     cart
     |> Map.update(:items, [], &(CartItem.update_quantities(&1, items)))
@@ -84,5 +96,6 @@ defmodule Evo.Cart do
     |> Map.update!(:total, &Enum.reduce(items, &1*0, fn(i, acc) ->
         i.qty * i.price + acc end))
     |> Map.update!(:total, &(&1 - cart.discount))
+    |> Map.update!(:total, &(&1 + cart.shipping.cost))
   end
 end

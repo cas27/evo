@@ -3,7 +3,6 @@
 OTP cart meant for use in eCommerce applications
 
 **Current Roadmap**
-- Add shipping map to cart struct
 - Add subtotal
 - Consider changing update quantities API from delta to new quantity
 - Move to using a global registry lib (gproc, syn, etc)
