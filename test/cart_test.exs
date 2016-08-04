@@ -26,6 +26,7 @@ defmodule Evo.CartTest do
 
       assert cart == %Cart{
         total: 3200.8,
+        subtotal: 3200.8,
         discount: 0.0,
         items: [
           Map.update!(vi, :qty, fn _ -> 4 end)
@@ -41,6 +42,7 @@ defmodule Evo.CartTest do
 
       assert cart == %Cart{
         total: 3004.8,
+        subtotal: 3004.8,
         discount: 0.0,
         items: [
           Map.update!(sale_item, :qty, fn _ -> 4 end)
@@ -70,6 +72,7 @@ defmodule Evo.CartTest do
       Cart.add_item(cart_pid, valid_item)
       assert Cart.get_cart(cart_pid) == {:ok, %Cart{
         total: 1600.4,
+        subtotal: 1600.4,
         discount: 0.0,
         items: [valid_item]
       }}
@@ -81,6 +84,7 @@ defmodule Evo.CartTest do
 
       assert Cart.get_cart(cart_pid) == {:ok, %Cart{
         total: 6401.60,
+        subtotal: 6401.60,
         discount: 0.0,
         items: [Map.update!(vi, :qty, fn(_) -> 8 end)]
       }}
@@ -102,12 +106,23 @@ defmodule Evo.CartTest do
 
       assert Cart.get_cart(cart_pid) == {:ok, %Cart{
         total: 1200.4,
+        subtotal: 1200.4,
         discount: 400,
         items: [vi]
       }}
 
       assert Cart.apply_discount(cart_pid, "discount") ==
         {:error, "Invalid discount"}
+    end
+
+    test "cart subtotal", %{cart: cart_pid, valid_item: vi} do
+      Cart.add_item(cart_pid, vi)
+
+      assert Cart.get_cart(cart_pid) == {:ok, %Cart{
+        total: 1600.4,
+        subtotal: 1600.4,
+        items: [vi]
+      }}
     end
   end
 
@@ -119,6 +134,7 @@ defmodule Evo.CartTest do
 
       assert Cart.get_cart(cart_pid) == {:ok, %Cart{
         total: 1625.92,
+        subtotal: 1600.4,
         discount: 0.0,
         shipping: %{carrier: "USPS", class: "Priority", cost: 25.52},
         items: [vi]

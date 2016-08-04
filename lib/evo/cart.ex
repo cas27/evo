@@ -6,6 +6,7 @@ defmodule Evo.Cart do
 
   defstruct [
     total: 0.0,
+    subtotal: 0.0,
     discount: 0.0,
     shipping: %{carrier: nil, class: nil, cost: 0.0},
     items: []
@@ -48,36 +49,31 @@ defmodule Evo.Cart do
   def handle_call({:apply_discount, discount}, _from, cart) do
     cart
     |> Map.put(:discount, discount)
-    |> update_cart_total
-    |> reply_with_cart
+    |> update_cart_details
   end
 
   def handle_call({:add_item, item}, _from, cart) do
     cart
     |> Map.update(:items, [], &(CartItem.update_items(&1, item)))
-    |> update_cart_total
-    |> reply_with_cart
+    |> update_cart_details
   end
 
   def handle_call({:remove_item, item_id, meta}, _from, cart) do
     cart
     |> Map.update(:items, [], &(CartItem.remove_item(&1, item_id, meta)))
-    |> update_cart_total
-    |> reply_with_cart
+    |> update_cart_details
   end
 
   def handle_call({:update_shipping, shipping}, _from, cart) do
     cart
     |> Map.update!(:shipping, fn(_) -> shipping end)
-    |> update_cart_total
-    |> reply_with_cart
+    |> update_cart_details
   end
 
   def handle_call({:update_quantities, items}, _from, cart) do
     cart
     |> Map.update(:items, [], &(CartItem.update_quantities(&1, items)))
-    |> update_cart_total
-    |> reply_with_cart
+    |> update_cart_details
   end
 
   def handle_call(:get_cart, _from, cart) do
@@ -86,6 +82,17 @@ defmodule Evo.Cart do
 
   defp reply_with_cart(cart) do
     {:reply, {:ok, cart}, cart}
+  end
+
+  defp update_cart_details(cart) do
+    cart
+    |> update_cart_total
+    |> update_cart_subtotal
+    |> reply_with_cart
+  end
+
+  defp update_cart_subtotal(cart) do
+    Map.update!(cart, :subtotal, fn(_) -> cart.total - cart.shipping.cost end)
   end
 
   defp update_cart_total(cart = %Cart{items: []}) do

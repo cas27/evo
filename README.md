@@ -3,7 +3,6 @@
 OTP cart meant for use in eCommerce applications
 
 **Current Roadmap**
-- Add subtotal
 - Consider changing update quantities API from delta to new quantity
 - Move to using a global registry lib (gproc, syn, etc)
 - Need stale cart clean-up strategy
@@ -14,7 +13,7 @@ OTP cart meant for use in eCommerce applications
 
     ```elixir
     def deps do
-      [{:evo, "~> 0.2.0"}]
+      [{:evo, "~> 0.3.0"}]
     end
     ```
 

@@ -33,7 +33,7 @@ defmodule Evo do
       iex> Evo.add_item(cart_id, item1)
       iex> Evo.add_item(cart_id, item2)
       iex> Evo.add_item(cart_id, item3)
-      {:ok, %Evo.Cart{discount: 0.0, total: 61.0,
+      {:ok, %Evo.Cart{discount: 0.0, total: 61.0, subtotal: 61.0,
       items: [
         %Evo.Cart.CartItem{id: "SKU12", qty: 2, price: 11.50, name: "",
           meta: %{extended_warranty: true}},
@@ -58,7 +58,7 @@ defmodule Evo do
       iex> Evo.apply_discount(cart_id, 2.00)
       {:ok, %Evo.Cart{discount: 2.00, items: [%Evo.Cart.CartItem{
       name: "Foosball", price: 4.99, qty: 1, meta: %{}, id: "FOO2"}],
-      total: 2.99}}
+      total: 2.99, subtotal: 2.99}}
 
   """
   def apply_discount(cart_id, discount) do
@@ -77,7 +77,8 @@ defmodule Evo do
       ...> id: "APPL2", name: "Apple", price: 0.20, qty: 2})
       iex> Evo.cart_contents(cart_id)
       {:ok, %Evo.Cart{discount: 0.0, items: [%Evo.Cart.CartItem{name: "Apple",
-        price: 0.20, qty: 2, meta: %{}, id: "APPL2"}], total: 0.4}}
+        price: 0.20, qty: 2, meta: %{}, id: "APPL2"}],
+        total: 0.4, subtotal: 0.4}}
 
   """
   def cart_contents(cart_id) do
@@ -187,7 +188,7 @@ defmodule Evo do
         %Evo.Cart{discount: 0.0,
         items: [%Evo.Cart.CartItem{id: "SKU12", meta: %{}, name: "", price: 84,
         qty: 1}], shipping: %{carrier: "UPS", class: "Ground", cost: 34.55},
-        total: 118.55}}
+        total: 118.55, subtotal: 84.0}}
 
   """
   def update_shipping(cart_id, shipping) do
