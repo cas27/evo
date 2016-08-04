@@ -1,4 +1,6 @@
 # Evo
+[![Build Status](https://travis-ci.org/cas27/evo.svg?branch=master)](https://travis-ci.org/cas27/evo)
+
 
 OTP cart meant for use in eCommerce applications
 
