@@ -2,7 +2,7 @@ defmodule Evo do
   use Application
 
   alias Evo.Cart
-  alias Evo.Cart.Registry
+  alias Evo.Cart.Supervisor, as: CartSupervisor
 
   @doc """
   Adds a Ecto.Cart.CartItem to the cart
@@ -42,7 +42,7 @@ defmodule Evo do
 
   """
   def add_item(cart_id, item) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.add_item(cart_pid, item)
   end
 
@@ -62,7 +62,7 @@ defmodule Evo do
 
   """
   def apply_discount(cart_id, discount) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.apply_discount(cart_pid, discount)
   end
 
@@ -82,12 +82,12 @@ defmodule Evo do
 
   """
   def cart_contents(cart_id) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.get_cart(cart_pid)
   end
 
   @doc """
-  Creates a cart through the registry with the `cart_id` and returns the `pid`
+  Creates a cart through the CartSupervisor with the `cart_id` and returns the `pid`
 
   ## Examples
 
@@ -100,7 +100,7 @@ defmodule Evo do
 
   """
   def create_or_get_cart(cart_id) do
-    Registry.create_cart(cart_id)
+    CartSupervisor.create_or_get_cart(cart_id)
   end
 
   @doc """
@@ -115,7 +115,7 @@ defmodule Evo do
       iex> Evo.delete_cart(99999999)
       {:error, "Cart not found"}
   """
-  def delete_cart(cart_id), do: Registry.delete_cart(cart_id)
+  def delete_cart(cart_id), do: CartSupervisor.delete_cart(cart_id)
 
   @doc """
   Removes an item from the cart
@@ -140,7 +140,7 @@ defmodule Evo do
       {:ok ,%Evo.Cart{total: 0.0, discount: 0.0, items: []}}
   """
   def remove_item(cart_id, item_id, meta \\ %{}) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.remove_item(cart_pid, item_id, meta)
   end
 
@@ -170,7 +170,7 @@ defmodule Evo do
       ]}}
   """
   def update_quantities(cart_id, items) when is_list(items) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.update_quantities(cart_pid, items)
   end
 
@@ -192,7 +192,7 @@ defmodule Evo do
 
   """
   def update_shipping(cart_id, shipping) do
-    {:ok, cart_pid} = Registry.get_cart(cart_id)
+    {:ok, cart_pid} = CartSupervisor.get_cart(cart_id)
     Cart.update_shipping(cart_pid, shipping)
   end
 
@@ -201,7 +201,6 @@ defmodule Evo do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Evo.Cart.Registry, []),
       supervisor(Evo.Cart.Supervisor, [])
     ]
 

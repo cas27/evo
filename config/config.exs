@@ -9,9 +9,9 @@ use Mix.Config
 # 3rd-party users, it should be done in your "mix.exs" file.
 
 # You can configure for your application as:
-#
-#     config :evo, key: :value
-#
+
+config :evo, registry_strategy: :l
+
 # And access this configuration in your application as:
 #
 #     Application.get_env(:evo, :key)

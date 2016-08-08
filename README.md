@@ -6,7 +6,6 @@ OTP cart meant for use in eCommerce applications
 
 **Current Roadmap**
 - Consider changing update quantities API from delta to new quantity
-- Move to using a global registry lib (gproc, syn, etc)
 - Need stale cart clean-up strategy
 
 ## Installation
@@ -15,7 +14,7 @@ OTP cart meant for use in eCommerce applications
 
     ```elixir
     def deps do
-      [{:evo, "~> 0.3.0"}]
+      [{:evo, "~> 0.4.0"}]
     end
     ```
 

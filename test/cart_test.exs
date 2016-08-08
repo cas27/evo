@@ -3,8 +3,8 @@ defmodule Evo.CartTest do
   alias Evo.Cart
   alias Evo.Cart.CartItem
 
-  setup do
-    {:ok, cart_pid} = Cart.start_link
+  setup context do
+    {:ok, cart_pid} = Cart.start_link(context[:test])
     valid_item = %CartItem{
       id: "LT1000B",
       name: "Laptop T1000",

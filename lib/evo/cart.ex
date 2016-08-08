@@ -12,8 +12,8 @@ defmodule Evo.Cart do
     items: []
   ]
 
-  def start_link do
-    GenServer.start_link(__MODULE__, :ok)
+  def start_link(id) do
+    GenServer.start_link(__MODULE__, :ok, name: via(id))
   end
 
   def add_item(cart_pid, %CartItem{} = item) when is_pid(cart_pid) do
@@ -104,5 +104,9 @@ defmodule Evo.Cart do
         i.qty * i.price + acc end))
     |> Map.update!(:total, &(&1 - cart.discount))
     |> Map.update!(:total, &(&1 + cart.shipping.cost))
+  end
+
+  defp via(id) do
+    {:via, :gproc, {:n, Application.get_env(:evo, :registry_strategy), id}}
   end
 end
