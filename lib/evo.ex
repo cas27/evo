@@ -5,7 +5,7 @@ defmodule Evo do
   alias Evo.Cart.Supervisor, as: CartSupervisor
 
   @doc """
-  Adds a Ecto.Cart.CartItem to the cart
+  Adds an Ecto.Cart.CartItem to the cart
 
   ## Example
 
@@ -67,7 +67,7 @@ defmodule Evo do
   end
 
   @doc """
-  Gets the contents of the cart at given the `cart_id`
+  Gets the contents of the cart at the given `cart_id`
 
   ##  Example
 
@@ -87,7 +87,7 @@ defmodule Evo do
   end
 
   @doc """
-  Creates a cart through the CartSupervisor with the `cart_id` and returns the `pid`
+  Creates a cart given `cart_id` and returns the `pid`
 
   ## Examples
 
@@ -104,7 +104,7 @@ defmodule Evo do
   end
 
   @doc """
-  Deletes a cart process
+  Deletes a cart process given the `cart_id`
 
   ## Example
 
@@ -118,7 +118,7 @@ defmodule Evo do
   def delete_cart(cart_id), do: CartSupervisor.delete_cart(cart_id)
 
   @doc """
-  Removes an item from the cart
+  Removes an item from the cart given a `cart_id` and `Evo.Cart.CartItem`
 
   ## Example
 
@@ -145,7 +145,8 @@ defmodule Evo do
   end
 
   @doc """
-  Updates the quantities of the given items
+  Updates the quantities of the given items given `cart_id` and list of
+  `Evo.Cart.CartItem`
 
   ## Examples
 

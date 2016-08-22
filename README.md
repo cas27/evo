@@ -14,7 +14,7 @@ OTP cart meant for use in eCommerce applications
 
     ```elixir
     def deps do
-      [{:evo, "~> 0.4.0"}]
+      [{:evo, "~> 0.4.1"}]
     end
     ```
 
